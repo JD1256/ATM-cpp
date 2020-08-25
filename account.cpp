@@ -13,6 +13,7 @@ class Account {
         bool checkValid();
         std::string write();
         bool validatePin(int number);
+        bool isBalanceNeg();
 
 };
 
@@ -30,7 +31,11 @@ void Account::createAccount(int idNum, std::string fname, std::string lname, int
 };
 
 void Account::showBalance(){
-    std::cout << "Current account balance: "<< balance << std::endl;
+    std::cout << "\nCurrent account balance: $"<< std::fixed << std::setprecision(2) << balance << std::endl;
+}
+
+bool Account::isBalanceNeg(){
+    return (balance < 0);
 }
 
 void Account::deposit(int amount) {
@@ -44,6 +49,10 @@ void Account::withdraw(int amount) {
 //Returns true if used. False if ID not used
 bool Account::checkValid(){
     return (firstName != "");
+}
+
+bool Account::validatePin(int number){
+    return (number == pin);
 }
 
 std::string Account::write(){
@@ -60,9 +69,9 @@ std::string Account::write(){
     //pin
     temp.append(std::to_string(pin));
     temp.append(" ");
+    //balance
+    temp.append(std::to_string(balance));
+    temp.append(" ");
     return temp;
 }
 
-bool Account::validatePin(int number){
-    return (number == pin);
-}
