@@ -1,61 +1,53 @@
-#include <string>
+#include "account.h"
 
-class Account {
-    private:
-        int id, pin;
-        std::string firstName = "", lastName = "";
-        double balance = 0;
-    public:
-        void createAccount(int idNum, std::string fname, std::string lname, int pinNum);
-        void showBalance();
-        void deposit(int amount);
-        void withdraw(int amount);
-        bool checkValid();
-        std::string write();
-        bool validatePin(int number);
-        bool isBalanceNeg();
+//impletment << overload for class
 
-};
+Account::Account() {}
 
-void Account::createAccount(int idNum, std::string fname, std::string lname, int pinNum){
-    //random seed
-    //srand(time(NULL));
-    //random number between 1 and 10
-    //id = rand() % 10 + 1;
-    //set variables
-    id = idNum;
-    firstName = fname;
-    lastName = lname;
-    pin = pinNum;
-    return;
-};
+//constructor
+Account::Account(uint32_t id, std::string firstName, std::string lastName, uint32_t pin) :
+    id(id),
+    firstName(firstName),
+    lastName(lastName),
+    pin(pin),
+    balance(0.0)
+{
+    //stuff happens when object is created (if wanted)
+}
 
-void Account::showBalance(){
+void Account::showBalance()
+{
     std::cout << "\nCurrent account balance: $"<< std::fixed << std::setprecision(2) << balance << std::endl;
 }
 
-bool Account::isBalanceNeg(){
+bool Account::isBalanceNeg()
+{
     return (balance < 0);
 }
 
-void Account::deposit(int amount) {
+void Account::deposit(double amount)
+{
     balance += amount;
 }
 
-void Account::withdraw(int amount) {
+void Account::withdraw(double amount)
+{
     balance -= amount;
 }
 
 //Returns true if used. False if ID not used
-bool Account::checkValid(){
+bool Account::checkValid()
+{
     return (firstName != "");
 }
 
-bool Account::validatePin(int number){
+bool Account::validatePin(uint32_t number)
+{
     return (number == pin);
 }
 
-std::string Account::write(){
+std::string Account::write()
+{
     std::string temp = "";
     //Id
     temp.append(std::to_string(id));
