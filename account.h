@@ -4,8 +4,6 @@
 #include <iomanip>
 #include <cstdint>
 
-
-//change all int types
 class Account {
     private:
         uint32_t id;
