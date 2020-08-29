@@ -1,7 +1,5 @@
 #include "account.h"
 
-//impletment << overload for class
-
 Account::Account() {}
 
 //constructor
@@ -46,24 +44,9 @@ bool Account::validatePin(uint32_t number)
     return (number == pin);
 }
 
-std::string Account::write()
+std::ostream& operator<<(std::ostream& os, const Account& ac)
 {
-    std::string temp = "";
-    //Id
-    temp.append(std::to_string(id));
-    temp.append(" ");
-    //Fname
-    temp.append(firstName);
-    temp.append(" ");
-    //Lname
-    temp.append(lastName);
-    temp.append(" ");
-    //pin
-    temp.append(std::to_string(pin));
-    temp.append(" ");
-    //balance
-    temp.append(std::to_string(balance));
-    temp.append(" ");
-    return temp;
+    os << ac.id << " " << ac.firstName << " " << ac.lastName << " " << ac.pin << " " << ac.balance << "\n";
+    return os;
 }
 

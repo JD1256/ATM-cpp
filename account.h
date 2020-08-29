@@ -20,5 +20,5 @@ class Account {
         void withdraw(double amount);
         bool checkValid();
         bool validatePin(uint32_t number);
-        std::string write();
+        friend std::ostream& operator<<(std::ostream& os, const Account& ac);
 };
