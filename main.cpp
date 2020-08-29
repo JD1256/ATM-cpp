@@ -9,8 +9,6 @@
 
 #include "account.h"
 
-//one dark pro
-
 std::string filename = "data.txt";
 uint32_t choice; //used when getting input from the user
 char letter[26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
@@ -22,22 +20,19 @@ std::string first;
 std::string last;
 std::string newPin;
 
-
 uint32_t accIncrement = 0; //contains the total number of accounts and will increase when new account is made
 uint32_t accSelect = -1; //used to select the account when signing in
 
 //sign in variables
-bool signedIn = false, flag;
+bool signedIn = false;
 uint32_t transferSel;
 double money = 0;
 
-
-
-std::string transfer(std::unordered_map<uint32_t, Account> acc,uint32_t acc1, uint32_t acc2, double amount);
-std::unordered_map<uint32_t, Account> loadAccounts(std::unordered_map<uint32_t, Account> accounts, std::string file);
-void storeAccounts(std::unordered_map<uint32_t, Account> accounts , std::string file);
-bool checkString(std::string input, char* type, char* end);
-bool checkPin(std::string input, char* type, char* end);
+std::string transfer(std::unordered_map<uint32_t, Account> acc,uint32_t acc1, uint32_t acc2, double amount); //transfer money from one account to another
+std::unordered_map<uint32_t, Account> loadAccounts(std::unordered_map<uint32_t, Account> accounts, std::string file); //load data from text into hash map
+void storeAccounts(std::unordered_map<uint32_t, Account> accounts , std::string file); //store hash map data to text file
+bool checkString(std::string input, char* type, char* end); //validate a string input (type is a char array that can contain letters or numbers)
+bool checkPin(std::string input, char* type, char* end); //validate a correct pin input
 
 int main() 
 {
@@ -50,7 +45,6 @@ int main()
     while (working)
     {   
         //main screen options
-        //not signed in section handles all inputs
         if (!signedIn) 
         {
             choice = -1;
@@ -90,7 +84,7 @@ int main()
             //sign in, create account, exit screen
             switch (choice)
             {
-                case 0: //Sign into account (change accSelect)
+                case 0: //Sign into account (change accSelect and signedIn varibles)
                 {
                     std::cout << "=================================\n";
                     std::cout << "There are " << accIncrement << " active accounts\n";
@@ -117,7 +111,7 @@ int main()
                         }
                     }
                     //confirm correct pin to login, 3 attempts then kicked out
-                    flag = false;
+                    bool flag = false;
                     uint32_t attempts = 2;
                     uint32_t accPin;
                     while (!flag && attempts >= 0) 
@@ -145,7 +139,6 @@ int main()
                         } 
                         else 
                         {
-                            flag = true;
                             signedIn = true;
                             std::cout << "\nLogin successful\n";
                         }
@@ -157,7 +150,7 @@ int main()
                     std::cout << "=======================================\n";
                     std::cout << "           Account creation\n";
 
-                    //Loop for first name input                                                         //if space entered it will take both name inputs at once
+                    //Loop for first name input
                     typing = true;
                     while (typing){
                         std::cout << "Please enter your first name: \n";
@@ -167,7 +160,7 @@ int main()
                         typing = checkString(first, letter, end);
                     }
 
-                    //Loop for last name input (turn this into a function so its not repeated)
+                    //Loop for last name input
                     typing = true;
                     while (typing){
                         std::cout << "Please enter your last name: \n";
@@ -176,7 +169,7 @@ int main()
                         char* end = letter + sizeof(letter) / sizeof(letter[0]);
                         typing = checkString(last, letter, end);
                     }
-
+                    //pin input
                     typing = true;
                     while (typing){
                         std::cout << "Please create a 5 digit pin:\n";
@@ -187,8 +180,8 @@ int main()
                     }
 
                     uint32_t tempPin = std::stoi(newPin);
-                    //check accIncrement if account number is used
-                    if (acc[accIncrement].checkValid()) 
+                    
+                    if (acc[accIncrement].checkValid()) //check accIncrement if account number is used
                     {
                         std::cout << accIncrement << std::endl;
                         accIncrement++;
@@ -266,7 +259,7 @@ int main()
                     break;
                 }
                 case 2:  
-                { //----------------------------------------------------------------------------------------- add limiter to not allow overdrafting
+                {
                     //Withdraw
                     std::cout << "\n";
                     std::string input;
@@ -422,7 +415,9 @@ std::unordered_map<uint32_t, Account> loadAccounts(std::unordered_map<uint32_t, 
         //acc[accIncrement] = Account(accIncrement,fileFname, fileLname, filePin);
         accounts[accIncrement] = account;
         accounts[accIncrement].deposit(fileBalance);
+        std::cout << accounts[accIncrement];
         accIncrement++;
+        
     }
     infile.close();
     return accounts;
@@ -435,9 +430,8 @@ void storeAccounts(std::unordered_map<uint32_t, Account> accounts, std::string f
 
     while (accounts[accSelect].checkValid()) 
     {
-        std::string toWrite = accounts[accSelect].write();
         //write out to file
-        outfile << toWrite << std::endl;
+        outfile << accounts[accSelect];
         accSelect++;
     }
 
