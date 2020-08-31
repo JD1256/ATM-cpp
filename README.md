@@ -1,2 +1,2 @@
 # ATM-cpp
-ATM system made in cpp
+ATM system made in c++
